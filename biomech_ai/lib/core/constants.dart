@@ -4,10 +4,7 @@ class AppConstants {
   static const String appVersion = 'v0.1';
   static const String footerText = 'v0.1 — Solo para uso profesional';
 
-  static const String apiBaseUrl = String.fromEnvironment(
-    'API_BASE_URL',
-    defaultValue: 'http://localhost:8000',
-  );
+  static const String apiBaseUrl = 'https://biomech-ai-production.up.railway.app';
 
   static const double paddingSmall = 8.0;
   static const double paddingMedium = 16.0;

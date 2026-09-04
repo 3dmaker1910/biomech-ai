@@ -25,7 +25,7 @@ android {
         create("release") {
             keyAlias = System.getenv("KEY_ALIAS") ?: "biomech_ai"
             keyPassword = System.getenv("KEY_PASSWORD") ?: "biomech2024"
-            storeFile = file("biomech_ai.keystore")
+            storeFile = file("../biomech_ai.keystore")
             storePassword = System.getenv("STORE_PASSWORD") ?: "biomech2024"
         }
     }

@@ -27,14 +27,35 @@ jobs:
         run: |
           echo "${{ secrets.BIOMECH_KEYSTORE_B64 }}" | base64 --decode > biomech_ai/android/biomech_ai.keystore
 
+      - name: Ensure Gradle Wrapper JAR
+        run: |
+          JAR="biomech_ai/android/gradle/wrapper/gradle-wrapper.jar"
+          if [ ! -s "$JAR" ] || [ $(wc -c < "$JAR") -lt 50000 ]; then
+            echo "JAR missing or too small, downloading..."
+            GRADLE_VER=$(grep distributionUrl biomech_ai/android/gradle/wrapper/gradle-wrapper.properties | grep -oP 'gradle-\K[0-9.]+(?=-bin)')
+            curl -fsSL "https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip" -o /tmp/gradle.zip
+            unzip -p /tmp/gradle.zip "gradle-${GRADLE_VER}/lib/gradle-wrapper-*.jar" > "$JAR" 2>/dev/null || \
+            python3 -c "
+import zipfile, shutil, os
+with zipfile.ZipFile('/tmp/gradle.zip') as z:
+    for name in z.namelist():
+        if 'gradle-wrapper' in name and name.endswith('.jar'):
+            with z.open(name) as src, open('$JAR', 'wb') as dst:
+                shutil.copyfileobj(src, dst)
+            print(f'Extracted: {name}')
+            break
+"
+          fi
+          ls -lh "$JAR"
+
       - name: Install dependencies
         working-directory: biomech_ai
         run: flutter pub get
 
       - name: Create local.properties
         run: |
-          echo "sdk.dir=$ANDROID_HOME" > biomech_ai/android/local.properties
-          echo "flutter.sdk=$(dirname $(dirname $(which flutter)))" >> biomech_ai/android/local.properties
+          echo 'sdk.dir=\$ANDROID_HOME' > biomech_ai/android/local.properties
+          echo 'flutter.sdk=$(dirname $(dirname $(which flutter)))' >> biomech_ai/android/local.properties
 
       - name: Build APK
         working-directory: biomech_ai
@@ -49,7 +70,6 @@ jobs:
         with:
           name: BiomechAI-release
           path: biomech_ai/build/app/outputs/flutter-apk/app-release.apk
-
       - name: Create Release
         uses: softprops/action-gh-release@v2
         if: github.ref == 'refs/heads/main'

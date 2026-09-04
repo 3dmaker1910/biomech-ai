@@ -31,13 +31,18 @@ jobs:
         working-directory: biomech_ai
         run: flutter pub get
 
+      - name: Create local.properties
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" > biomech_ai/android/local.properties
+          echo "flutter.sdk=$(dirname $(dirname $(which flutter)))" >> biomech_ai/android/local.properties
+
       - name: Build APK
         working-directory: biomech_ai
         env:
           KEY_ALIAS: ${{ secrets.BIOMECH_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.BIOMECH_KEY_PASSWORD }}
           STORE_PASSWORD: ${{ secrets.BIOMECH_STORE_PASSWORD }}
-        run: flutter build apk --release
+        run: flutter build apk --release --verbose
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

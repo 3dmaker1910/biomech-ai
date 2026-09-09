@@ -119,18 +119,20 @@ class ApiService {
         return 'Error de conexión: el servidor no responde.';
       case DioExceptionType.connectionError:
         return 'No se pudo conectar al servidor.';
+      case DioExceptionType.badCertificate:
+        return 'Error de certificado SSL.';
       case DioExceptionType.badResponse:
         final statusCode = e.response?.statusCode;
         final responseData = e.response?.data;
         if (statusCode == 404) return 'Recurso no encontrado.';
         if (statusCode == 422) {
           if (responseData is Map && responseData.containsKey('detail')) {
-            return 'Error de validación: ${responseData[\'detail\']}';
+            return 'Error de validación: \${responseData[\'detail\']}';
           }
           return 'Datos inválidos.';
         }
         if (statusCode == 500) return 'Error interno del servidor.';
-        return 'Error del servidor (código $statusCode).';
+        return 'Error del servidor (código \$statusCode).';
       default:
         return 'Error inesperado. Intente nuevamente.';
     }

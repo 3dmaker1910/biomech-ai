@@ -83,7 +83,7 @@ class _PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
         padding: const EdgeInsets.all(12),
         child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
           const Spacer(),
-          Icon(isBody ? Icons.person_outline : Icons.footprint, size: 32, color: AppTheme.accent.withOpacity(0.5)),
+          Icon(isBody ? Icons.person_outline : Icons.directions_walk, size: 32, color: AppTheme.accent.withOpacity(0.5)),
           const SizedBox(height: 8),
           Text(label, textAlign: TextAlign.center, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppTheme.primary)),
           const SizedBox(height: 8),
@@ -178,7 +178,7 @@ class _PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
       }
       setState(() { _selectedPhotos[type] = file; _isVerifying = false; });
     } catch (e) {
-      if (mounted) { Navigator.pop(context); ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al capturar imagen: $e'), backgroundColor: AppTheme.errorRed)); }
+      if (mounted) { Navigator.pop(context); ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al capturar imagen: $e'), backgroundColor: AppTheme.errorRed))); }
       setState(() => _isVerifying = false);
     }
   }

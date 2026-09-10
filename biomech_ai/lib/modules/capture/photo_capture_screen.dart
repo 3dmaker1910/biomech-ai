@@ -178,7 +178,7 @@ class _PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
       }
       setState(() { _selectedPhotos[type] = file; _isVerifying = false; });
     } catch (e) {
-      if (mounted) { Navigator.pop(context); ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al capturar imagen: $e'), backgroundColor: AppTheme.errorRed))); }
+      if (mounted) { Navigator.pop(context); ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al capturar imagen: $e'), backgroundColor: AppTheme.errorRed)); }
       setState(() => _isVerifying = false);
     }
   }

@@ -51,6 +51,10 @@ jobs:
           echo "flutter.sdk=$(dirname $(dirname $(which flutter)))" >> biomech_ai/android/local.properties
           cat biomech_ai/android/local.properties
 
+      - name: Create .env file
+        run: |
+          echo "API_URL=https://biomech-ai-production.up.railway.app" > biomech_ai/.env
+
       - name: Install dependencies
         working-directory: biomech_ai
         run: flutter pub get

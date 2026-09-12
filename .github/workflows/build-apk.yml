@@ -55,6 +55,27 @@ jobs:
         run: |
           echo "API_URL=https://biomech-ai-production.up.railway.app" > biomech_ai/.env
 
+      - name: Generate launcher icons
+        run: |
+          python3 - <<'PYEOF'
+          from PIL import Image
+          import os
+
+          RES = "biomech_ai/android/app/src/main/res"
+          SIZES = {
+              "mipmap-mdpi":    48,
+              "mipmap-hdpi":    72,
+              "mipmap-xhdpi":   96,
+              "mipmap-xxhdpi":  144,
+              "mipmap-xxxhdpi": 192,
+          }
+          for folder, px in SIZES.items():
+              img = Image.new("RGB", (px, px), (0, 120, 120))
+              path = os.path.join(RES, folder, "ic_launcher.png")
+              img.save(path, "PNG")
+              print(f"OK {path} ({os.path.getsize(path)} bytes)")
+          PYEOF
+
       - name: Install dependencies
         working-directory: biomech_ai
         run: flutter pub get

@@ -32,14 +32,14 @@ jobs:
           JAR="biomech_ai/android/gradle/wrapper/gradle-wrapper.jar"
           SIZE=$(wc -c < "$JAR" 2>/dev/null || echo 0)
           if [ "$SIZE" -lt 50000 ]; then
-            echo "JAR missing or too small ($SIZE bytes), downloading from GitHub..."
+            echo "JAR missing or too small ($SIZE bytes), downloading..."
             curl -fsSL \
               "https://raw.githubusercontent.com/gradle/gradle/v9.3.1/gradle/wrapper/gradle-wrapper.jar" \
               -o "$JAR" || \
             curl -fsSL \
               "https://raw.githubusercontent.com/gradle/gradle/REL_9.3.1/gradle/wrapper/gradle-wrapper.jar" \
               -o "$JAR" || \
-            (echo "Trying from v9.0..." && curl -fsSL \
+            (echo "Trying v9.0..." && curl -fsSL \
               "https://raw.githubusercontent.com/gradle/gradle/v9.0.0/gradle/wrapper/gradle-wrapper.jar" \
               -o "$JAR")
           fi
@@ -57,24 +57,14 @@ jobs:
 
       - name: Generate launcher icons
         run: |
-          python3 - <<'PYEOF'
-          from PIL import Image
-          import os
-
-          RES = "biomech_ai/android/app/src/main/res"
-          SIZES = {
-              "mipmap-mdpi":    48,
-              "mipmap-hdpi":    72,
-              "mipmap-xhdpi":   96,
-              "mipmap-xxhdpi":  144,
-              "mipmap-xxxhdpi": 192,
-          }
-          for folder, px in SIZES.items():
-              img = Image.new("RGB", (px, px), (0, 120, 120))
-              path = os.path.join(RES, folder, "ic_launcher.png")
-              img.save(path, "PNG")
-              print(f"OK {path} ({os.path.getsize(path)} bytes)")
-          PYEOF
+          RES=biomech_ai/android/app/src/main/res
+          convert -size 48x48   xc:"#007878" $RES/mipmap-mdpi/ic_launcher.png
+          convert -size 72x72   xc:"#007878" $RES/mipmap-hdpi/ic_launcher.png
+          convert -size 96x96   xc:"#007878" $RES/mipmap-xhdpi/ic_launcher.png
+          convert -size 144x144 xc:"#007878" $RES/mipmap-xxhdpi/ic_launcher.png
+          convert -size 192x192 xc:"#007878" $RES/mipmap-xxxhdpi/ic_launcher.png
+          echo "Icons generated:"
+          ls -lh $RES/mipmap-*/ic_launcher.png
 
       - name: Install dependencies
         working-directory: biomech_ai

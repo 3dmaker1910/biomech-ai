@@ -57,14 +57,13 @@ jobs:
 
       - name: Generate launcher icons
         run: |
+          sudo apt-get install -y --no-install-recommends imagemagick
           RES=biomech_ai/android/app/src/main/res
-          # Detect ImageMagick command (Ubuntu 24 uses 'magick', older uses 'convert')
-          if command -v magick &>/dev/null; then IM=magick; else IM=convert; fi
-          $IM -size 48x48   xc:"#007878" $RES/mipmap-mdpi/ic_launcher.png
-          $IM -size 72x72   xc:"#007878" $RES/mipmap-hdpi/ic_launcher.png
-          $IM -size 96x96   xc:"#007878" $RES/mipmap-xhdpi/ic_launcher.png
-          $IM -size 144x144 xc:"#007878" $RES/mipmap-xxhdpi/ic_launcher.png
-          $IM -size 192x192 xc:"#007878" $RES/mipmap-xxxhdpi/ic_launcher.png
+          convert -size 48x48   xc:"#007878" $RES/mipmap-mdpi/ic_launcher.png
+          convert -size 72x72   xc:"#007878" $RES/mipmap-hdpi/ic_launcher.png
+          convert -size 96x96   xc:"#007878" $RES/mipmap-xhdpi/ic_launcher.png
+          convert -size 144x144 xc:"#007878" $RES/mipmap-xxhdpi/ic_launcher.png
+          convert -size 192x192 xc:"#007878" $RES/mipmap-xxxhdpi/ic_launcher.png
           echo "Icons generated:"
           ls -lh $RES/mipmap-*/ic_launcher.png
 

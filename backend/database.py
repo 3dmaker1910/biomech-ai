@@ -1,4 +1,5 @@
 import os
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 
@@ -28,3 +29,8 @@ async def get_db():
 async def create_tables():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        # Migration: add telefono column if it does not exist yet
+        try:
+            await conn.execute(text("ALTER TABLE patients ADD COLUMN telefono VARCHAR(20)"))
+        except Exception:
+            pass  # Column already exists, nothing to do

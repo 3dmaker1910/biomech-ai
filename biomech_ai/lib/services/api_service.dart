@@ -9,7 +9,7 @@ class ApiService {
   ApiService() {
     _dio = Dio(BaseOptions(
       baseUrl: AppConstants.apiBaseUrl,
-      connectTimeout: const Duration(seconds: 10),
+      connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       headers: {
         'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ class ApiService {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
-        return 'Error de conexión: el servidor no responde.';
+        return 'Error de conexi\u00f3n: el servidor no responde.';
       case DioExceptionType.connectionError:
         return 'No se pudo conectar al servidor.';
       case DioExceptionType.badCertificate:
@@ -127,12 +127,12 @@ class ApiService {
         if (statusCode == 404) return 'Recurso no encontrado.';
         if (statusCode == 422) {
           if (responseData is Map && responseData.containsKey('detail')) {
-            return 'Error de validación: \${responseData[\'detail\']}';
+            return 'Error de validaci\u00f3n: \${responseData[\'detail\']}';
           }
-          return 'Datos inválidos.';
+          return 'Datos inv\u00e1lidos.';
         }
         if (statusCode == 500) return 'Error interno del servidor.';
-        return 'Error del servidor (código \$statusCode).';
+        return 'Error del servidor (c\u00f3digo \$statusCode).';
       default:
         return 'Error inesperado. Intente nuevamente.';
     }

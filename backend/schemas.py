@@ -11,6 +11,7 @@ class PatientCreate(BaseModel):
     height_cm: float = Field(..., gt=0, le=300)
     reason: str = Field(..., min_length=1, max_length=100)
     notes: Optional[str] = Field(None, max_length=200)
+    telefono: Optional[str] = Field(None, max_length=20)
 
 
 class PatientUpdate(BaseModel):
@@ -21,6 +22,7 @@ class PatientUpdate(BaseModel):
     height_cm: Optional[float] = Field(None, gt=0, le=300)
     reason: Optional[str] = Field(None, min_length=1, max_length=100)
     notes: Optional[str] = Field(None, max_length=200)
+    telefono: Optional[str] = Field(None, max_length=20)
 
 
 class PatientResponse(BaseModel):
@@ -34,6 +36,7 @@ class PatientResponse(BaseModel):
     height_cm: float
     reason: str
     notes: Optional[str]
+    telefono: Optional[str]
     created_at: datetime
     updated_at: datetime
 

@@ -20,6 +20,7 @@ class Patient(Base):
     height_cm = Column(Float, nullable=False)
     reason = Column(String(100), nullable=False)
     notes = Column(Text, nullable=True)
+    telefono = Column(String(20), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

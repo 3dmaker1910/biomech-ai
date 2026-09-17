@@ -7,6 +7,7 @@ class Patient {
   final double heightCm;
   final String reason;
   final String? notes;
+  final String? telefono;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -19,6 +20,7 @@ class Patient {
     required this.heightCm,
     required this.reason,
     this.notes,
+    this.telefono,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -33,6 +35,7 @@ class Patient {
       heightCm: (json['height_cm'] as num).toDouble(),
       reason: json['reason'] as String,
       notes: json['notes'] as String?,
+      telefono: json['telefono'] as String?,
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
     );
@@ -47,6 +50,7 @@ class Patient {
       'height_cm': heightCm,
       'reason': reason,
       'notes': notes,
+      'telefono': telefono,
     };
   }
 }
